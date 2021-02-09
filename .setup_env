@@ -1,0 +1,2 @@
+AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://passeidireto:passeidireto@postgres:5034/passeidireto
+AIRFLOW__CORE__EXECUTOR=LocalExecutor

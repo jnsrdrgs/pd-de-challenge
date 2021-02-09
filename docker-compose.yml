@@ -1,0 +1,46 @@
+version: "3.7"
+
+services:
+    postgres:
+        image: postgres
+        environment:
+            - POSTGRES_USER=passeidireto
+            - POSTGRES_PASSWORD=passeidireto
+            - POSTGRES_DB=passeidireto
+        ports:
+          - "5438:5432"
+        volumes:
+          - ./postgres-data:/var/lib/postgresql/data
+        networks:
+          - default
+
+    scheduler:
+        image: apache/airflow
+        command: scheduler
+        depends_on:
+            - postgres
+        env_file:
+            - .setup_env
+        volumes:
+            - ./airflow/dags:/pd-de-challenge/airflow/dags
+            - ./airflow/logs:/pd-de-challenge/airflow/logs
+
+    webserver:
+        image: apache/airflow
+        command: airflow db init && airflow webserver
+        depends_on:
+            - postgres
+            - scheduler
+        env_file:
+            - .setup_env
+        volumes:
+            - ./airflow/dags:/pd-de-challenge/airflow/dags
+            - ./airflow/logs:/pd-de-challenge/airflow/logs
+            - ./airflow/scripts:/pd-de-challenge/airflow/scripts
+        ports:
+            - "8088:8080"
+
+networks:
+  default:
+    driver: bridge
+    name: passeidireto

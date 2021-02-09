@@ -1,0 +1,7 @@
+ {
+  "s3_bucket": "",
+  "environment": "",
+  "gcp_project": "",
+  "databricks_secret": "",
+  "spectrum_iam_role": ""
+}
